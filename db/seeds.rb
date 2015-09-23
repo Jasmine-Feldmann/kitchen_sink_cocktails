@@ -1,3 +1,4 @@
+#encoding: UTF-8
 require "net/http"
 require "uri"
 require "csv"
@@ -20,45 +21,55 @@ site_url = "www.cocktails.eu"
 def create_csv_file
 	index = 0
 	@pagination_letters.each do |letter|
-		print letter
 		@pagination_numbers[index].times do |pages|
 			sleep(1)
 			page_request = each_page_letter("#{letter}&i=#{pages+1}")
 			page_response = @http.request(page_request)
 			open("db/cocktail_recipes.html", "a+") do |i|
-				i.puts page_response.body.parameterize + "\n"
+				page_response.body.force_encoding("UTF-8")
+				i.puts page_response.body + "\n"
 			end
 		end
 		index += 1
 	end
 end
 
-#create_csv_file
+# create_csv_file
 @cocktail_recipes = Nokogiri::HTML(File.open("db/cocktail_recipes.html"))
 
+cocktail_ingredients = []
+
 @ingredients = @cocktail_recipes.css(".list_head").map do |link|
-  cocktail_ingredients = []
   correct_element = link.next_sibling.next_sibling
-  correct_element.text.scan(/,\.+,/).each do |item|
-  	item.gsub(/ with/, "")
-  	item.gsub(/\p{S}/, "")
-  	cocktail_ingredients << item.slice(2..-2)
+  correct_element.text.scan(/,.+,/).each do |item|
+  	item = item.gsub(/, with/, "")
+  	item = item.gsub(/\p{S}/, "")
+  	while item.index(',')
+  		index = item.index(',')
+  		new_item = item.slice!(0..index)
+  		cocktail_ingredients << new_item.slice(1..-2)
+  	end
   end
   correct_element = correct_element.text.gsub(/\p{S} /, "")
-  puts correct_element
-  last_two_items = correct_element.text.scan(/, \w+\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\w*and .+./).first
+  last_two_items = correct_element.scan(/, \w+\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\w*and .+./).first
   if last_two_items == nil 
-  	last_two_items = correct_element.scan(/, \w+\s\w+\s\w+$/).first #to check for edge case of no period and no "and"
+  	last_two_items = correct_element.scan(/, \w+\s\w+\s\w+$/).first 
   end
-  last_two_items.gsub(/\p{S}/, "")
-  cocktail_ingredients << last_two_items.scan(/, \w+\s*\w*\s*\w*\s*\w*\s*\w* and/).slice(2..-5)
- 	cocktail_ingredients << last_two_items.scan(/and \w+\s*\w*\s*\w*\s*\w*\s*\w*./).slice(4..-2)
+  last_two_items = last_two_items.gsub(/\p{S}/, "")
+  first_item = last_two_items.scan(/, \w+\-*\w*\.*\s*\&*\w*\-*\w*\.*\s*\w*\-*\w*\s*\&*\w*\s*\w*\s*\w*\s*\w*\s*\w*\s*and/).first
+  if first_item == nil
+  	first_item = last_two_items.scan(/, \w+\s\w+\s\w+$/).first
+  	cocktail_ingredients << first_item.slice(2..-1)
+  else
+  	cocktail_ingredients << first_item.slice(2..-5)
+ 		cocktail_ingredients << last_two_items.scan(/and \w+\s*\w*\s*\w*\s*\w*\s*\w*./).first.slice(4..-2)
+  end
 end
 
-@ingredients.uniq!
+cocktail_ingredients.uniq!
 
-@ingredients.each do |ingredient|
-	Ingredient.create!(ingredient)
+cocktail_ingredients.each do |ingredient|
+	Ingredient.create!({name: ingredient})
 end
 
 @cocktail_recipes.css(".list_head").each do |name|
