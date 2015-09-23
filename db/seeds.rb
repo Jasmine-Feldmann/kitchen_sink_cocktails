@@ -21,11 +21,10 @@ def create_csv_file
 	@pagination_letters.each do |letter|
 		print letter
 		@pagination_numbers[index].times do |pages|
-			print pages
 			sleep(1)
 			page_request = each_page_letter("#{letter}&i=#{pages+1}")
 			page_response = @http.request(page_request)
-			open("cocktail_recipes_index.html", "a+") do |i|
+			open("db/cocktail_recipe.html", "a+") do |i|
 				i.puts page_response.body.parameterize + "\n"
 			end
 		end
@@ -33,12 +32,16 @@ def create_csv_file
 	end
 end
 
-create_csv_file
-@cocktail_recipes = Nokogiri::HTML(File.open("cocktail_recipes_index.html"))
+
+# create_csv_file #uncomment this to run the scraper 
+f = File.open("db/cocktail_recipe.html")
+cocktail_recipes = Nokogiri::HTML(open(f))
+f.close
+
+
 
 @cocktail_ingredients = []
-
-@cocktail_recipes.css(".list_head").each do |link|
+cocktail_recipes.css("a.list_head").each do |link|
   correct_element = link.next_sibling.next_sibling
   correct_element.text.scan(/, .+,/).each do |item|
   	item.gsub!(/ with/, "")
@@ -61,7 +64,7 @@ end
 	Ingredient.create!(ingredient)
 end
 
-@cocktail_recipes.css(".list_head").each do |name|
+cocktail_recipes.css(".list_head").each do |name|
   Cocktail.create!({name: name.text, link: site_url + name['href']})
 end
 
