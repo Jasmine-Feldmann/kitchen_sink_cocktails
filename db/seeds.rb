@@ -52,22 +52,31 @@ cocktail_ingredients = []
       index = item.index(',')
       new_item = item.slice!(0..index)
       cocktail_ingredients << new_item.slice(1..-2)
-
     end
   end
-  correct_element = correct_element.text.gsub(/\p{S} /, "")
-  last_two_items = correct_element.scan(/, \w+\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\w*and .+./).first
-  if last_two_items == nil 
-    last_two_items = correct_element.scan(/, \w+\s\w+\s\w+$/).first 
-  end
-  last_two_items = last_two_items.gsub(/\p{S}/, "")
-  first_item = last_two_items.scan(/, \w+\-*\w*\.*\s*\&*\w*\-*\w*\.*\s*\w*\-*\w*\s*\&*\w*\s*\w*\s*\w*\s*\w*\s*\w*\s*and/).first
-  if first_item == nil
-    first_item = last_two_items.scan(/, \w+\s\w+\s\w+$/).first
-    cocktail_ingredients << first_item.slice(2..-1)
+  if correct_element.text.gsub(/ with/, "") != nil
+    correct_element = correct_element.text.gsub(/ with/, "")
+    correct_element = correct_element.gsub(/\p{S} /, "")
   else
-    cocktail_ingredients << first_item.slice(2..-5)
-    cocktail_ingredients << last_two_items.scan(/and \w+\s*\w*\s*\w*\s*\w*\s*\w*./).first.slice(4..-2)
+    correct_element = correct_element.text.gsub(/\p{S} /, "")
+  end
+  last_two_items = correct_element.scan(/,\s*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\w*and .+./).first
+  if last_two_items == nil 
+    last_two_items = correct_element.scan(/,\w+\s\w+\s\w+\s\w+\.$/).first 
+  end
+  if last_two_items != nil
+    last_two_items = last_two_items.gsub(/\p{S}/, "")
+    first_item = last_two_items.scan(/,\s*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\w*and/).first
+    if first_item == nil
+      first_item = last_two_items.scan(/, \w+\s\w+\s\w+$/).first
+      cocktail_ingredients << first_item.slice(2..-1)
+    else
+      cocktail_ingredients << first_item.slice(2..-5)
+      cocktail_ingredients << last_two_items.scan(/and \w+\s*\w*\s*\w*\s*\w*\s*\w*./).first.slice(4..-2)
+    end
+  else
+    first_item = correct_element.scan(/, \w+\s\w+\s\w+$/).first
+    cocktail_ingredients << first_item.slice(2..-1)
   end
 end
 
@@ -89,18 +98,28 @@ end
       cocktail.ingredients << Ingredient.find_by(name: new_item.slice(1..-2))
     end
   end
-  correct_element = correct_element.text.gsub(/\p{S} /, "")
-  last_two_items = correct_element.scan(/, \w+\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\w*and .+./).first
-  if last_two_items == nil 
-    last_two_items = correct_element.scan(/, \w+\s\w+\s\w+$/).first 
-  end
-  last_two_items = last_two_items.gsub(/\p{S}/, "")
-  first_item = last_two_items.scan(/, \w+\-*\w*\.*\s*\&*\w*\-*\w*\.*\s*\w*\-*\w*\s*\&*\w*\s*\w*\s*\w*\s*\w*\s*\w*\s*and/).first
-  if first_item == nil
-    first_item = last_two_items.scan(/, \w+\s\w+\s\w+$/).first
-    cocktail.ingredients << Ingredient.find_by(name: first_item.slice(2..-1))
+  if correct_element.text.gsub(/ with/, "") != nil
+    correct_element = correct_element.text.gsub(/ with/, "")
+    correct_element = correct_element.gsub(/\p{S} /, "")
   else
-    cocktail.ingredients << Ingredient.find_by(name: first_item.slice(2..-5))
-    cocktail.ingredients << Ingredient.find_by(name: last_two_items.scan(/and \w+\s*\w*\s*\w*\s*\w*\s*\w*./).first.slice(4..-2))
+    correct_element = correct_element.text.gsub(/\p{S} /, "")
+  end
+  last_two_items = correct_element.scan(/,\s*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\w*and .+./).first
+  if last_two_items == nil 
+    last_two_items = correct_element.scan(/,\w+\s\w+\s\w+\s\w+\.$/).first 
+  end
+  if last_two_items != nil
+    last_two_items = last_two_items.gsub(/\p{S}/, "")
+    first_item = last_two_items.scan(/,\s*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\&*\w*\-*\.*\s*\w*and/).first
+    if first_item == nil
+      first_item = last_two_items.scan(/, \w+\s\w+\s\w+$/).first
+      cocktail.ingredients << Ingredient.find_by(name: first_item.slice(2..-1))
+    else
+      cocktail.ingredients << Ingredient.find_by(name: first_item.slice(2..-5))
+      cocktail.ingredients << Ingredient.find_by(name: last_two_items.scan(/and \w+\s*\w*\s*\w*\s*\w*\s*\w*./).first.slice(4..-2))
+    end
+  else
+    first_item = correct_element.scan(/, \w+\s\w+\s\w+$/).first
+    cocktail_ingredients << Ingredient.find_by(name: first_item.slice(2..-1))
   end
 end
