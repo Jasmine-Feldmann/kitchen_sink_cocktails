@@ -1,15 +1,22 @@
 <%= form_tag(cocktails_path, :method => 'get', :class => "search_form") do %>
-  <%= label_tag(:query, "Search for:") %>
-  <%= text_field_tag(:query) %>
+  <%= label_tag(:query, "Ingredients:") %>
+  <%= text_field_tag(:query1) %>
+  <%= text_field_tag(:query2) %>
+  <%= text_field_tag(:query3) %>
+  <%= text_field_tag(:query4) %>
+  <%= text_field_tag(:query5) %>
   <%= submit_tag("Search") %>
 <% end %>
 
-
-<ul class="cocktail_list">
-<% @cocktails.each do |cocktail| %>
-	<li><%= link_to cocktail.name, "http://#{cocktail.link}", :target => "_blank" %></li>
+<% if @cocktails.length >= 1 %>
+	<ul class="cocktail_list">
+	<% @cocktails.each do |cocktail| %>
+		<li><%= link_to cocktail.name, "http://#{cocktail.link}", :target => "_blank" %></li>
+	<% end %>
+	</ul>
+<% else %>
+	<div>No cocktails found! Try another search.</div>
 <% end %>
-</ul>
 
 <div class="searched_ingredients">
 </div>
