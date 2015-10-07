@@ -1,0 +1,12 @@
+<%= form_tag(cocktails_path, :method => 'get') do %>
+  <%= label_tag(:query, "Search for:") %>
+  <%= text_field_tag(:query) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+
+<ul>
+<% @cocktails.each do |cocktail| %>
+	<li><%= cocktail.name %></li>
+<% end %>
+</ul>
