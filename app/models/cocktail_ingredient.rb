@@ -1,5 +1,5 @@
 class CocktailIngredient < ActiveRecord::Base
-	searchkick
+	searchkick 
 	belongs_to :cocktail
 	belongs_to :ingredient
 end
