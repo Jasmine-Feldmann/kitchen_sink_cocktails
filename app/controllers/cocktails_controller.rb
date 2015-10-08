@@ -6,6 +6,7 @@ def index
   if params[:query4].present?
   	temp1 = {}
   	temp2 = {}
+    @ingredients = [params[:query1], params[:query2], params[:query3], params[:query4]]
     ingredients1 = Ingredient.search(params[:query1], name: params[:name], order: {name: :asc}) 
     ingredients2 = Ingredient.search(params[:query2], name: params[:name], order: {name: :asc}) 
     ingredients3 = Ingredient.search(params[:query3], name: params[:name], order: {name: :asc}) 
@@ -35,6 +36,7 @@ def index
    	@cocktails.uniq!
   elsif params[:query3].present?
   	temp = {}
+    @ingredients = [params[:query1], params[:query2], params[:query3]]
     ingredients1 = Ingredient.search(params[:query1], name: params[:name], order: {name: :asc}) 
     ingredients2 = Ingredient.search(params[:query2], name: params[:name], order: {name: :asc}) 
     ingredients3 = Ingredient.search(params[:query3], name: params[:name], order: {name: :asc}) 
@@ -56,6 +58,7 @@ def index
    	end
    	@cocktails.uniq!
   elsif params[:query2].present?
+    @ingredients = [params[:query1], params[:query2]]
     ingredients1 = Ingredient.search(params[:query1], name: params[:name], order: {name: :asc}) 
     ingredients2 = Ingredient.search(params[:query2], name: params[:name], order: {name: :asc}) 
     cocktails = ingredients1.map {|ingredient| ingredient.cocktails}.flatten! 
@@ -69,8 +72,9 @@ def index
    		end
    	end
   elsif params[:query1].present?
-  	@ingredients << Ingredient.search(params[:query1], name: params[:name], order: {name: :asc})
-    @cocktails = @ingredients.map {|ingredient| ingredient.cocktails}
+    @ingredients = [params[:query1]]
+  	ingredients << Ingredient.search(params[:query1], name: params[:name], order: {name: :asc})
+    @cocktails = ingredients.map {|ingredient| ingredient.cocktails}
   else
     @cocktails = Cocktail.all
   end
