@@ -8,6 +8,9 @@
 <% end %>
 
 <div class="searched_ingredients">
+	<% @ingredients.each do |ingredient| %>
+		<span><%= ingredient %></span>
+	<% end %>
 </div>
 
 <% if @cocktails.length >= 1 %>
