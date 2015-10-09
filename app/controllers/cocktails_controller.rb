@@ -73,8 +73,8 @@ def index
    	end
   elsif params[:query1].present?
     @ingredients = [params[:query1]]
-  	ingredients << Ingredient.search(params[:query1], name: params[:name], order: {name: :asc})
-    @cocktails = ingredients.map {|ingredient| ingredient.cocktails}
+  	ingredients = Ingredient.search(params[:query1], name: params[:name], order: {name: :asc})
+    @cocktails = ingredients.map {|ingredient| ingredient.cocktails}.flatten!
   else
     @cocktails = Cocktail.all
   end

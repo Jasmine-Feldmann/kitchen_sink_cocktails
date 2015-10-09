@@ -9,6 +9,9 @@ body
 #header, #subheading, .search_form 
 	text-align: center
 
+#header
+	font-size: 50px
+
 li 
 	font-size: 16px
 
@@ -19,7 +22,14 @@ a
 	color: #7F8A8A
 
 .cocktail_list 
-	padding-left: 80px
+	padding: 0px 80px
+	-webkit-column-count: 3
+	-moz-column-count: 3
+	column-count: 3
+	-webkit-column-width: 200px
+	-moz-column-width: 200px
+	column-width: 200px
+
 
 .searched_ingredients
 	display: inline-block
@@ -28,12 +38,36 @@ a
 	margin-bottom: 50px
 	text-align: center
 
-span 
+.ingredient
 	padding: 10px
-	border: 1px solid #7F8A8A
 	background-color: #C9DBDB
 	font-weight: bold
-	border-radius: 15px
+	font-size: 18px
+	line-height: 1.33
+	border-radius: 6px
+	display: inline-block
+	margin-bottom: 0
+	text-align: center
+	vertical-align: middle
+	cursor: pointer
+	border: 1px solid transparent
+
+.legend 
+	background-color: #C9DBDB
+	border: 1px solid transparent
+	border-radius: 6px
+	width: 10%
+	float: right
+	margin-right: 10px
+
+.cocktail_result
+	border: 1px solid #C9DBDB
+	padding: 20px
+	text-align: center
+	background-color: white
+	-webkit-column-break-inside: avoid
+
+
 
 
 
