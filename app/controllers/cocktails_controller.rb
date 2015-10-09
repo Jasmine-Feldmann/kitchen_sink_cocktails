@@ -76,7 +76,7 @@ def index
   	ingredients = Ingredient.search(params[:query1], name: params[:name], order: {name: :asc})
     @cocktails = ingredients.map {|ingredient| ingredient.cocktails}.flatten!
   else
-    @cocktails = Cocktail.all
+    @cocktails 
   end
 end
 
