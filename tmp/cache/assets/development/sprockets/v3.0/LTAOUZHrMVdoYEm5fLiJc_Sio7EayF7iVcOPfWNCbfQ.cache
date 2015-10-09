@@ -1,0 +1,8 @@
+I"…(function() {
+  $('#book_search').typeahead({
+    name: "book",
+    remote: "/books/autocomplete?query=%QUERY"
+  });
+
+}).call(this);
+:ET
