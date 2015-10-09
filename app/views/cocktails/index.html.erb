@@ -1,5 +1,3 @@
-
-
 <%= form_tag(cocktails_path, :method => 'get', :class => "search_form") do %>
   <%= label_tag(:query, "Choose ingredients:") %>
   <%= text_field_tag(:query1) %>
@@ -17,11 +15,24 @@
 
 
 <% if @cocktails.length >= 1 %>
-	<ol class="cocktail_list">
+	<div class="cocktail_list">
 	<% @cocktails.each do |cocktail| %>
-		<li><%= link_to cocktail.name, "http://#{cocktail.link}", :target => "_blank" %></li>
+		<div class="cocktail_result"><%= link_to cocktail.name, "http://#{cocktail.link}", :target => "_blank" %>
+		<% if num_ingredients(cocktail) <= 3 %>
+			<span class="glyphicon glyphicon-glass"></span>
+		</div>
+		<% elsif num_ingredients(cocktail) < 6 %>
+			<span class="glyphicon glyphicon-glass"></span>
+			<span class="glyphicon glyphicon-glass"></span>
+		</div>
+		<% else %>
+			<span class="glyphicon glyphicon-glass"></span>
+			<span class="glyphicon glyphicon-glass"></span>
+			<span class="glyphicon glyphicon-glass"></span>
+		</div>
+		<% end %>
 	<% end %>
-	</ol>
+	</div>
 <% else %>
 	<div>No cocktails found! Try another search.</div>
 <% end %>
