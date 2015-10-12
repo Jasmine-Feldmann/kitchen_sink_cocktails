@@ -1,0 +1,16 @@
+<% @cocktails.each do |cocktail| %>
+	<div class="cocktail_result"><%= link_to cocktail.name, "http://#{cocktail.link}", :target => "_blank" %>
+	<% if num_ingredients(cocktail) <= 3 %>
+		<span class="glyphicon glyphicon-glass"></span>
+	</div>
+	<% elsif num_ingredients(cocktail) < 6 %>
+		<span class="glyphicon glyphicon-glass"></span>
+		<span class="glyphicon glyphicon-glass"></span>
+	</div>
+	<% else %>
+		<span class="glyphicon glyphicon-glass"></span>
+		<span class="glyphicon glyphicon-glass"></span>
+		<span class="glyphicon glyphicon-glass"></span>
+	</div>
+	<% end %>
+<% end %>
