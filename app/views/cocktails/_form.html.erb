@@ -1,0 +1,8 @@
+<%= form_tag(cocktail_path(1), :method => 'get', :class => "search_form", :remote => true) do %>
+  <%= label_tag(:query, "Choose ingredients:") %>
+  <%= text_field_tag(:query) %>
+  <% @ingredients.each do |ingredient| %>
+  	<%= hidden_field_tag "ingredients[]", ingredient.name %>
+  <% end %>
+  <%= submit_tag("Search") %>
+<% end %>
