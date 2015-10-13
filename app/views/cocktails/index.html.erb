@@ -1,17 +1,20 @@
-<div class="form">
-	<%= form_tag(cocktail_path(1), :method => 'get', :class => "search_form", :remote => true) do %>
-	  <%= label_tag(:term, "Choose ingredients:") %>
-	  <%= autocomplete_field_tag(:term, params[:term], autocomplete_ingredient_name_cocktails_path, {class: "search-query", placeholder: "", type: "search"}) %>
-	  <% @ingredients.each do |ingredient| %>
-	  	<%= hidden_field_tag "ingredients[]", ingredient.name %>
-	  <% end %>
-	  <%= submit_tag("Search") %>
-	<% end %>
+<div class="form-reset">
+	<div class="form">
+		<%= form_tag(cocktail_path(1), :method => 'get', :class => "search_form", :remote => true) do %>
+		  <%= label_tag(:term, "Choose ingredients:") %>
+		  <%= autocomplete_field_tag(:term, params[:term], autocomplete_ingredient_name_cocktails_path, {class: "search-query", placeholder: "", type: "search"}) %>
+		  <% @ingredients.each do |ingredient| %>
+		  	<%= hidden_field_tag "ingredients[]", ingredient.name %>
+		  <% end %>
+		  <%= submit_tag("Filter") %>
+		<% end %>
+	</div>
+
+	<div class="reset"><%= link_to "Reset search", root_path%></div>
 </div>
 
-<div class="searched_ingredients">
-</div>
+<div class="searched_ingredients"></div>
 
-<div class="cocktail_list">
-</div>
+
+<div class="cocktail_list"></div>
 
