@@ -29,6 +29,7 @@ gem 'twitter-typeahead-rails'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 gem 'rails_12factor'
+gem 'rails4-autocomplete'
 
 
 # Use ActiveModel has_secure_password

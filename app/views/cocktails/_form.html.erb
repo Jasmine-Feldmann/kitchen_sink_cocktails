@@ -1,6 +1,6 @@
 <%= form_tag(cocktail_path(1), :method => 'get', :class => "search_form", :remote => true) do %>
-  <%= label_tag(:query, "Choose ingredients:") %>
-  <%= text_field_tag(:query) %>
+  <%= label_tag(:term, "Choose ingredients:") %>
+  <%= autocomplete_field_tag(:term, params[:term], autocomplete_ingredient_name_cocktails_path, {class: "search-query", placeholder: "", type: "search"}) %>
   <% @ingredients.each do |ingredient| %>
   	<%= hidden_field_tag "ingredients[]", ingredient.name %>
   <% end %>

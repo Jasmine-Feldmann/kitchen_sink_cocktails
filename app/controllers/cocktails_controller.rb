@@ -1,16 +1,26 @@
 class CocktailsController < ApplicationController
+  autocomplete :ingredient, :name
 
   def index
     @cocktails = []
     @ingredients = []
   end
 
+  def autocomplete_ingredient_name
+    @ingredients = Ingredient.order(:name).where("name LIKE ?", "%#{params[:term]}%")
+    respond_to do |format|
+      format.html
+      format.json { 
+        render json: @ingredients.map(&:name)
+      }
+    end
+  end
 
   def show
     hash = {}
     @cocktails = []
     @ingredients = Ingredient.all.map {|ingredient| ingredient}
-    @ingredients.select! {|ingredient| ingredient.name.downcase.include?(params[:query])}
+    @ingredients.select! {|ingredient| ingredient.name.downcase.include?(params[:term])}
     if params[:ingredients] 
       old_ingredients = []
       params[:ingredients].each do |ing|
