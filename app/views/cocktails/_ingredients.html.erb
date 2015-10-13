@@ -1,0 +1,5 @@
+<% if @ingredients %>
+	<% @ingredients.each do |ingredient| %>
+		<span class="ingredient"><%= ingredient.name %></span>
+	<% end %>
+<% end %>

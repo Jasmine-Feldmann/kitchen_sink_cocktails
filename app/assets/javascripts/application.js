@@ -11,10 +11,10 @@
 // about supported directives.
 //
 
-//= require twitter/typeahead
-//= require twitter/typeahead.min
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
+//= require autocomplete-rails
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .

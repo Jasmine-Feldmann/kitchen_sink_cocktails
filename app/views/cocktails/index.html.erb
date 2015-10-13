@@ -1,38 +1,17 @@
-<%= form_tag(cocktails_path, :method => 'get', :class => "search_form") do %>
-  <%= label_tag(:query, "Choose ingredients:") %>
-  <%= text_field_tag(:query1) %>
-  <%= text_field_tag(:query2) %>
-  <%= text_field_tag(:query3) %>
-  <%= text_field_tag(:query4) %>
-  <%= submit_tag("Search") %>
-<% end %>
-
-<div class="searched_ingredients">
-	<% if @ingredients %>
-		<% @ingredients.each do |ingredient| %>
-			<span class="ingredient"><%= ingredient %></span>
-		<% end %>
+<div class="form">
+	<%= form_tag(cocktail_path(1), :method => 'get', :class => "search_form", :remote => true) do %>
+	  <%= label_tag(:term, "Choose ingredients:") %>
+	  <%= autocomplete_field_tag(:term, params[:term], autocomplete_ingredient_name_cocktails_path, {class: "search-query", placeholder: "", type: "search"}) %>
+	  <% @ingredients.each do |ingredient| %>
+	  	<%= hidden_field_tag "ingredients[]", ingredient.name %>
+	  <% end %>
+	  <%= submit_tag("Search") %>
 	<% end %>
 </div>
 
+<div class="searched_ingredients">
+</div>
 
-<% if @cocktails.length >= 1 %>
-	<div class="cocktail_list">
-	<% @cocktails.each do |cocktail| %>
-		<div class="cocktail_result"><%= link_to cocktail.name, "http://#{cocktail.link}", :target => "_blank" %>
-		<% if num_ingredients(cocktail) <= 3 %>
-			<span class="glyphicon glyphicon-glass"></span>
-		</div>
-		<% elsif num_ingredients(cocktail) < 6 %>
-			<span class="glyphicon glyphicon-glass"></span>
-			<span class="glyphicon glyphicon-glass"></span>
-		</div>
-		<% else %>
-			<span class="glyphicon glyphicon-glass"></span>
-			<span class="glyphicon glyphicon-glass"></span>
-			<span class="glyphicon glyphicon-glass"></span>
-		</div>
-		<% end %>
-	<% end %>
-	</div>
-<% end %>
+<div class="cocktail_list">
+</div>
+
